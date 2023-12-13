@@ -4,12 +4,15 @@ import Button from "../../components/Button";
 import { Link } from "react-router-dom";
 
 function Register() {
+  const onFinish = async (values) => {
+    console.log("Success:", values);
+  };
   return (
     <div className="flex justify-center h-screen items-center bg-primary">
       <div className="card p-3 w-400">
         <h1 className="text-xl mb-1">IWANMOVIES - REGISTER</h1>
         <hr />
-        <Form layout="vertical" className="mt-1">
+        <Form layout="vertical" className="mt-1" onFinish={onFinish}>
           <Form.Item
             label="Name"
             name="name"
