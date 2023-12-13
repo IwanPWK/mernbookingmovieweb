@@ -35,3 +35,11 @@
 .text-3xl {
   font-size: 30px;
 }
+
+.border {
+  border-width: 1px;
+}
+
+.br-1 {
+  border-radius: 4px;
+}
