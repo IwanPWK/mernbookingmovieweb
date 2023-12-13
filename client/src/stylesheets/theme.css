@@ -1,0 +1,24 @@
+:root {
+  --colour-primary: #002e2a;
+  --colour-secondary: #e6b412;
+}
+
+.bg-primary {
+  background-color: var(--colour-primary);
+}
+
+.bg-secondary {
+  background-color: var(--colour-secondary);
+}
+
+.text-primary {
+  color: var(--colour-primary) !important;
+}
+
+.border-primary {
+  border-color: var(--colour-primary);
+}
+
+.border-secondary {
+  border-color: var(--colour-secondary);
+}
