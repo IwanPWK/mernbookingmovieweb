@@ -5,8 +5,11 @@ module.exports = function (req, res, next) {
     const token = req.headers.authorization.split(" ")[1];
     const decoded = jwt.verify(token, process.env.jwt_secret);
     req.body.userId = decoded.userId;
+    console.log(req.body.userId);
+
     next();
   } catch (error) {
+    console.log(error);
     res.status(401).send({ success: false, message: "Invalid token" });
   }
 };

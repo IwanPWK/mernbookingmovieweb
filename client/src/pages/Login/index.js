@@ -1,9 +1,11 @@
+import React, { useEffect } from "react";
 import { Form, message } from "antd";
 import Button from "../../components/Button";
 import { Link, useNavigate } from "react-router-dom";
 import { LoginUser } from "../../apicalls/users";
+const { axiosInstance } = require("../../apicalls/index");
 
-function Register() {
+function Login() {
   const navigate = useNavigate();
   const onFinish = async (values) => {
     try {
@@ -11,6 +13,7 @@ function Register() {
       if (response.success) {
         message.success(response.message);
         localStorage.setItem("token", response.data);
+
         window.location.href = "/";
       } else {
         message.error(response.message);
@@ -19,6 +22,12 @@ function Register() {
       message.error(error.message);
     }
   };
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      navigate("/");
+    }
+  }, []);
 
   return (
     <div className="flex justify-center h-screen items-center bg-primary">
@@ -54,4 +63,4 @@ function Register() {
   );
 }
 
-export default Register;
+export default Login;
