@@ -4,7 +4,7 @@ import { GetCurrentUser } from "../apicalls/users";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { SetUser } from "../redux/usersSlice";
-// import { HideLoading, ShowLoading } from "../redux/loadersSlice";
+import { HideLoading, ShowLoading } from "../redux/loadersSlice";
 
 function ProtectedRoute({ children }) {
   const count = useRef(null);
@@ -14,10 +14,9 @@ function ProtectedRoute({ children }) {
 
   const getCurrentUser = async () => {
     try {
-      //   dispatch(ShowLoading());
+      dispatch(ShowLoading());
       const response = await GetCurrentUser();
-      console.log(response);
-      //   dispatch(HideLoading());
+      dispatch(HideLoading());
       if (response.success) {
         dispatch(SetUser(response.data));
 
@@ -41,7 +40,6 @@ function ProtectedRoute({ children }) {
           localStorage.setItem("status", "success");
         }
       } else {
-        // dispatch(SetUser(null));
         dispatch(SetUser(null));
         message.error("Something wrong, please login again");
         localStorage.removeItem("token");
@@ -50,8 +48,7 @@ function ProtectedRoute({ children }) {
       }
     } catch (error) {
       dispatch(SetUser(null));
-      //   dispatch(HideLoading());
-      //   dispatch(SetUser(null));
+      dispatch(HideLoading());
       message.error(error.message);
     }
   };
