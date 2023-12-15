@@ -77,7 +77,7 @@ function ProtectedRoute({ children }) {
               className="text-2xl text-white cursor-pointer"
               onClick={() => navigate("/")}
             >
-              SHEYMOVIES
+              IWANMOVIES
             </h1>
           </div>
 
@@ -97,9 +97,10 @@ function ProtectedRoute({ children }) {
             </h1>
 
             <i
-              className="ri-logout-box-r-line ml-2"
+              className="ri-logout-box-r-line ml-2 cursor-pointer"
               onClick={() => {
                 localStorage.removeItem("token");
+                localStorage.removeItem("status");
                 navigate("/login");
               }}
             ></i>
