@@ -2,16 +2,15 @@ import { message } from "antd";
 import React, { useEffect, useState, useRef } from "react";
 import { GetCurrentUser } from "../apicalls/users";
 import { useNavigate } from "react-router-dom";
-// import { useDispatch, useSelector } from "react-redux";
-// import { SetUser } from "../redux/usersSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { SetUser } from "../redux/usersSlice";
 // import { HideLoading, ShowLoading } from "../redux/loadersSlice";
 
 function ProtectedRoute({ children }) {
   const count = useRef(null);
-  const [user, setUser] = useState(null);
-  //   const { user } = useSelector((state) => state.users);
+  const { user } = useSelector((state) => state.users);
   const navigate = useNavigate();
-  //   const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   const getCurrentUser = async () => {
     try {
@@ -20,11 +19,20 @@ function ProtectedRoute({ children }) {
       console.log(response);
       //   dispatch(HideLoading());
       if (response.success) {
-        // dispatch(SetUser(response.data));
-        setUser(response.data);
+        dispatch(SetUser(response.data));
+
+        const docTimestamp = new Date(response.data.createdAt); // timestamp from mongoDB
+
+        const twentyFourHoursInMilliseconds = 24 * 60 * 60 * 1000; // 24 hours in milliseconds.
+
+        const currentTimestamp = new Date(); // Current time.
+
+        //  Calculate the time difference between the MongoDB timestamp and the current time.
+        const differenceTimes = currentTimestamp - docTimestamp;
+
         if (
           localStorage.getItem("status") === null &&
-          localStorage.getItem("user") === "OK"
+          differenceTimes > twentyFourHoursInMilliseconds // Check if the difference is more than 24 hours (in milliseconds).
         ) {
           message.success("Welcome back " + response.data.name);
           localStorage.setItem("status", "success");
@@ -34,15 +42,14 @@ function ProtectedRoute({ children }) {
         }
       } else {
         // dispatch(SetUser(null));
-        setUser(null);
+        dispatch(SetUser(null));
         message.error("Something wrong, please login again");
         localStorage.removeItem("token");
         localStorage.removeItem("status");
-        localStorage.setItem("user", "OK");
         navigate("/login");
       }
     } catch (error) {
-      setUser(null);
+      dispatch(SetUser(null));
       //   dispatch(HideLoading());
       //   dispatch(SetUser(null));
       message.error(error.message);
